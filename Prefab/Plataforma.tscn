@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://cilgtidqlfwwd"]
+
+[ext_resource type="Texture2D" path="res://Sprites/Maps/Plataforma_sheet.png" id="1_vmtdo"]
+[ext_resource type="Script" path="res://Scripts/plataforma.gd" id="2_plat"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vmtdo"]
+size = Vector2(31, 27)
+
+[node name="Plataforma" type="Node2D"]
+script = ExtResource("2_plat")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_vmtdo")
+hframes = 20
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-0.5, -2.5)
+shape = SubResource("RectangleShape2D_vmtdo")
+debug_color = Color(0.99822086, 0, 0.15862334, 0.41960785)
