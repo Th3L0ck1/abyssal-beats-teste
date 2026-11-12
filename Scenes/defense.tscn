@@ -2,23 +2,13 @@
 
 [ext_resource type="Script" path="res://Scripts/defensegrid.gd" id="1_hbh8w"]
 [ext_resource type="PackedScene" uid="uid://cilgtidqlfwwd" path="res://Prefab/Plataforma.tscn" id="2_0ikjg"]
-[ext_resource type="Script" path="res://Scripts/player_1.gd" id="3_0ikjg"]
+[ext_resource type="Script" path="res://Scripts/player_base.gd" id="3_player"]
 [ext_resource type="Texture2D" path="res://Sprites/Players/Squetch_sheet.png" id="3_dxjh3"]
 [ext_resource type="Texture2D" path="res://Sprites/Players/Peixoto_sheet.png" id="4_8bko5"]
-[ext_resource type="Script" path="res://Scripts/player_2.gd" id="5_dxjh3"]
-[ext_resource type="PackedScene" uid="uid://gacarho346hg" path="res://Scenes/fade_transition.tscn" id="7_8bko5"]
 [ext_resource type="Texture2D" path="res://Sprites/Maps/AbyssBackground.png" id="8_bg"]
 [ext_resource type="Texture2D" path="res://Sprites/Enemies/Jellyfish_sheet.png" id="9_guard"]
 [ext_resource type="FontFile" uid="uid://dsnfisidee8w7" path="res://Themes/Stacked pixel.ttf" id="10_font"]
 [ext_resource type="Texture2D" path="res://Sprites/Maps/UnderwaterDecor_sheet.png" id="11_decor"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ax6av"]
-radius = 7.0
-height = 16.0
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qluxg"]
-radius = 7.0
-height = 16.0
 
 [node name="Defense" type="Node2D"]
 script = ExtResource("1_hbh8w")
@@ -102,37 +92,35 @@ position = Vector2(280, 240)
 [node name="Players" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Player1" type="CharacterBody2D" parent="Players" node_paths=PackedStringArray("grid")]
+[node name="Player1" type="Node2D" parent="Players" node_paths=PackedStringArray("grid")]
 position = Vector2(200, 192)
-script = ExtResource("3_0ikjg")
+script = ExtResource("3_player")
 grid = NodePath("../..")
+player_prefix = "p1"
+is_peixoto = false
 current_cell = Vector2i(0, 1)
-grid_offset = Vector2(200, 152)
+hop_time = 0.21
+hop_height = 13.0
 metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Players/Player1"]
-visible = false
-shape = SubResource("CapsuleShape2D_ax6av")
 
 [node name="Sprite2D" type="Sprite2D" parent="Players/Player1"]
 texture = ExtResource("3_dxjh3")
 hframes = 14
 
-[node name="Player2" type="CharacterBody2D" parent="Players" node_paths=PackedStringArray("grid")]
+[node name="Player2" type="Node2D" parent="Players" node_paths=PackedStringArray("grid")]
 position = Vector2(280, 192)
-script = ExtResource("5_dxjh3")
+script = ExtResource("3_player")
 grid = NodePath("../..")
+player_prefix = "p2"
+is_peixoto = true
 current_cell = Vector2i(2, 1)
-grid_offset = Vector2(200, 152)
+hop_time = 0.21
+hop_height = 13.0
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Players/Player2"]
 texture = ExtResource("4_8bko5")
 hframes = 14
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Players/Player2"]
-visible = false
-shape = SubResource("CapsuleShape2D_qluxg")
 
 [node name="Effects" type="Node2D" parent="."]
 
@@ -144,8 +132,22 @@ position = Vector2(240, 108)
 offset_left = -76.0
 offset_top = -12.0
 offset_right = 76.0
-offset_bottom = 12.0
+offset_bottom = 16.0
 color = Color(0.04, 0.08, 0.16, 0.85)
+
+[node name="TimerBarBg" type="ColorRect" parent="RhythmDisplay"]
+offset_left = -70.0
+offset_top = 11.0
+offset_right = 70.0
+offset_bottom = 14.0
+color = Color(0.12, 0.16, 0.24, 0.9)
+
+[node name="TimerBarFill" type="ColorRect" parent="RhythmDisplay"]
+offset_left = -70.0
+offset_top = 11.0
+offset_right = 70.0
+offset_bottom = 14.0
+color = Color(0.31, 0.89, 0.89, 1)
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -224,13 +226,3 @@ theme_override_fonts/font = ExtResource("10_font")
 theme_override_font_sizes/font_size = 10
 text = "Desvie dos alertas! Entre na plataforma de SINFONIA (notas saindo do chao)!"
 horizontal_alignment = 1
-
-[node name="fade_transition" parent="." instance=ExtResource("7_8bko5")]
-visible = false
-top_level = true
-
-[node name="fade_timer" type="Timer" parent="fade_transition"]
-wait_time = 0.9
-one_shot = true
-
-[connection signal="timeout" from="fade_transition/fade_timer" to="." method="_on_fade_timer_timeout"]

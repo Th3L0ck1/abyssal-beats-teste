@@ -138,11 +138,6 @@ func open_gate() -> void:
 	tw.tween_property(sprite, "scale", Vector2.ONE, 0.12)
 	GameState.play_tone(330.0, 0.08, "bell")
 
-func clear_enemy() -> void:
-	kind = "o"
-	_resolver_visual()
-	VFX.play(self, BUBBLES_TEX, 5, 11.0, Vector2(0, -6), Vector2(1.8, 1.8), false, 3)
-
 func take_chest() -> void:
 	if chest_taken:
 		return
@@ -151,3 +146,13 @@ func take_chest() -> void:
 	icon.position.y = -4
 	VFX.play(self, BUBBLES_TEX, 5, 11.0, Vector2(0, -8), Vector2(1.5, 1.5), false, 3)
 	GameState.play_tone(784.0, 0.12, "bell")
+
+func on_stepped() -> void:
+	if not sprite:
+		return
+	var tw := create_tween().set_parallel(true)
+	tw.tween_property(sprite, "position:y", 3.0, 0.045).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tw.tween_property(sprite, "scale", Vector2(1.08, 0.90), 0.045).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tw.chain().set_parallel(true)
+	tw.tween_property(sprite, "position:y", 0.0, 0.09).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_property(sprite, "scale", Vector2.ONE, 0.09).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)

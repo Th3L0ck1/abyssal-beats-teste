@@ -1,15 +1,14 @@
 [gd_scene format=3 uid="uid://b6o414r7bqrhm"]
 
 [ext_resource type="FontFile" uid="uid://dsnfisidee8w7" path="res://Themes/Stacked pixel.ttf" id="1_1rerr"]
-[ext_resource type="Script" path="res://Scripts/menu.gd" id="1_xhh6f"]
+[ext_resource type="Script" uid="uid://oyg3cm7px0hg" path="res://Scripts/menu.gd" id="1_xhh6f"]
 [ext_resource type="Theme" uid="uid://c13tjlsx1f482" path="res://Themes/menu_theme.tres" id="2_158mb"]
-[ext_resource type="PackedScene" uid="uid://gacarho346hg" path="res://Scenes/fade_transition.tscn" id="3_cayip"]
-[ext_resource type="Texture2D" path="res://Sprites/Maps/AbyssBackground.png" id="4_bg"]
-[ext_resource type="Texture2D" path="res://Sprites/Maps/Plataforma.png" id="5_plat"]
-[ext_resource type="Texture2D" path="res://Sprites/Players/Squetch_sheet.png" id="6_sq"]
-[ext_resource type="Texture2D" path="res://Sprites/Players/Peixoto_sheet.png" id="7_px"]
+[ext_resource type="Texture2D" uid="uid://buvq3sf36xce3" path="res://Sprites/Maps/AbyssBackground.png" id="4_bg"]
+[ext_resource type="Texture2D" path="res://Sprites/Maps/Plataforma_sheet.png" id="5_plat"]
+[ext_resource type="Texture2D" uid="uid://rr2p7yvnv58g" path="res://Sprites/Players/Squetch_sheet.png" id="6_sq"]
+[ext_resource type="Texture2D" uid="uid://d32c2uxe46pky" path="res://Sprites/Players/Peixoto_sheet.png" id="7_px"]
 
-[node name="Main Menu" type="Control"]
+[node name="Main Menu" type="Control" unique_id=60429353]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,7 +17,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_xhh6f")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=558362015]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,34 +26,36 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_bg")
 
-[node name="Decor" type="Node2D" parent="."]
+[node name="Decor" type="Node2D" parent="." unique_id=1283570677]
 
-[node name="PlatLeft" type="Sprite2D" parent="Decor"]
+[node name="PlatLeft" type="Sprite2D" parent="Decor" unique_id=725366005]
 position = Vector2(96, 198)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("5_plat")
+hframes = 20
 
-[node name="SquetchPreview" type="Sprite2D" parent="Decor"]
+[node name="SquetchPreview" type="Sprite2D" parent="Decor" unique_id=274062523]
 position = Vector2(96, 178)
 scale = Vector2(2, 2)
 texture = ExtResource("6_sq")
 hframes = 14
 frame = 8
 
-[node name="PlatRight" type="Sprite2D" parent="Decor"]
+[node name="PlatRight" type="Sprite2D" parent="Decor" unique_id=1986940362]
 position = Vector2(384, 198)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("5_plat")
+hframes = 20
 
-[node name="PeixotoPreview" type="Sprite2D" parent="Decor"]
+[node name="PeixotoPreview" type="Sprite2D" parent="Decor" unique_id=1024760919]
 position = Vector2(384, 178)
 scale = Vector2(2, 2)
 texture = ExtResource("7_px")
+flip_h = true
 hframes = 14
 frame = 8
-flip_h = true
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=830807252]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
@@ -64,13 +65,13 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_158mb")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1792960101]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 12
 
-[node name="Title" type="RichTextLabel" parent="PanelContainer/VBoxContainer"]
+[node name="Title" type="RichTextLabel" parent="PanelContainer/VBoxContainer" unique_id=976883918]
 layout_mode = 2
 theme_type_variation = &"RichTextLabelTitle"
 theme_override_colors/default_color = Color(0.305882, 0.894118, 0.890196, 1)
@@ -83,7 +84,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 text_direction = 1
 
-[node name="Subtitle" type="Label" parent="PanelContainer/VBoxContainer"]
+[node name="Subtitle" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1941386492]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.984314, 0.94902, 0.211765, 1)
 theme_override_colors/font_outline_color = Color(0.0588235, 0.0784314, 0.137255, 1)
@@ -93,7 +94,7 @@ theme_override_font_sizes/font_size = 12
 text = "Squetch & Peixoto - Subaquatic Co-op"
 horizontal_alignment = 1
 
-[node name="Play" type="Button" parent="PanelContainer/VBoxContainer"]
+[node name="Play" type="Button" parent="PanelContainer/VBoxContainer" unique_id=520568020]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -103,7 +104,7 @@ theme_override_fonts/font = ExtResource("1_1rerr")
 text = "Play"
 flat = true
 
-[node name="Settings" type="Button" parent="PanelContainer/VBoxContainer"]
+[node name="Settings" type="Button" parent="PanelContainer/VBoxContainer" unique_id=1686335048]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -113,7 +114,7 @@ theme_override_fonts/font = ExtResource("1_1rerr")
 text = "Settings"
 flat = true
 
-[node name="Quit" type="Button" parent="PanelContainer/VBoxContainer"]
+[node name="Quit" type="Button" parent="PanelContainer/VBoxContainer" unique_id=48483289]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -123,15 +124,6 @@ theme_override_fonts/font = ExtResource("1_1rerr")
 text = "Quit"
 flat = true
 
-[node name="fade_transition" parent="." instance=ExtResource("3_cayip")]
-visible = false
-layout_mode = 0
-
-[node name="fade_timer" type="Timer" parent="fade_transition"]
-wait_time = 0.8
-one_shot = true
-
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
-[connection signal="timeout" from="fade_transition/fade_timer" to="." method="_on_fade_timer_timeout"]

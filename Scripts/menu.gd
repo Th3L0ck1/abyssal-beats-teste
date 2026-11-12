@@ -1,43 +1,41 @@
 extends Control
 
-var button_type = null
 var timer_preview: float = 0.0
 var frame_preview: int = 0
 
+@onready var squetch_preview: Sprite2D = $Decor/SquetchPreview
+@onready var peixoto_preview: Sprite2D = $Decor/PeixotoPreview
+@onready var plat_left: Sprite2D = $Decor/PlatLeft
+@onready var plat_right: Sprite2D = $Decor/PlatRight
+
 func _ready() -> void:
-	$fade_transition.show()
-	$fade_transition/AnimationPlayer.play("fade_out")
+	GameState.fade_out()
+	GameState.spawn_ambient_bubbles($Decor, Vector2(480, 270), Vector2(240, 275), 14)
 
 func _process(delta: float) -> void:
 	timer_preview += delta
 	if timer_preview >= 0.16:
 		timer_preview = 0.0
 		frame_preview = (frame_preview + 1) % 4
-		if has_node("Decor/SquetchPreview"):
-			$Decor/SquetchPreview.frame = 8 + frame_preview
-		if has_node("Decor/PeixotoPreview"):
-			$Decor/PeixotoPreview.frame = 8 + frame_preview
+		squetch_preview.frame = 8 + frame_preview
+		peixoto_preview.frame = 8 + frame_preview
+		plat_left.frame = frame_preview % 2
+		plat_right.frame = (frame_preview + 1) % 2
 
 func _on_play_pressed() -> void:
-	button_type = "play"
-	GameState.play_tone(523.25, 0.10, "keyboard")
+	if GameState.is_transitioning:
+		return
+	GameState.play_ui_sfx("click")
 	GameState.reset_world_progress()
-	$fade_transition.show()
-	$fade_transition/fade_timer.start()
-	$fade_transition/AnimationPlayer.play("fade_in")
+	GameState.fade_to_scene("res://Scenes/world.tscn")
 
 func _on_settings_pressed() -> void:
-	button_type = "settings"
-	GameState.play_tone(392.00, 0.10, "guitar")
-	$fade_transition.show()
-	$fade_transition/fade_timer.start()
-	$fade_transition/AnimationPlayer.play("fade_in")
+	if GameState.is_transitioning:
+		return
+	GameState.play_ui_sfx("click")
+	GameState.fade_to_scene("res://Scenes/settings.tscn")
 
 func _on_quit_pressed() -> void:
+	if GameState.is_transitioning:
+		return
 	get_tree().quit()
-
-func _on_fade_timer_timeout() -> void:
-	if button_type == "play":
-		get_tree().change_scene_to_file("res://Scenes/world.tscn")
-	elif button_type == "settings":
-		get_tree().change_scene_to_file("res://Scenes/settings.tscn")

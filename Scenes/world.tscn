@@ -2,21 +2,11 @@
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_world"]
 [ext_resource type="Texture2D" path="res://Sprites/Maps/WorldBackground.png" id="2_bg"]
-[ext_resource type="Script" path="res://Scripts/player_1.gd" id="4_p1"]
+[ext_resource type="Script" path="res://Scripts/player_base.gd" id="4_player"]
 [ext_resource type="Texture2D" path="res://Sprites/Players/Squetch_sheet.png" id="5_sq"]
-[ext_resource type="Script" path="res://Scripts/player_2.gd" id="6_p2"]
 [ext_resource type="Texture2D" path="res://Sprites/Players/Peixoto_sheet.png" id="7_px"]
 [ext_resource type="FontFile" uid="uid://dsnfisidee8w7" path="res://Themes/Stacked pixel.ttf" id="8_font"]
-[ext_resource type="PackedScene" uid="uid://gacarho346hg" path="res://Scenes/fade_transition.tscn" id="9_fade"]
 [ext_resource type="Texture2D" path="res://Sprites/World/WorldIcons_sheet.png" id="10_icons"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p1"]
-radius = 7.0
-height = 16.0
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p2"]
-radius = 7.0
-height = 16.0
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_world")
@@ -38,37 +28,33 @@ centered = false
 [node name="Players" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Player1" type="CharacterBody2D" parent="Players" node_paths=PackedStringArray("grid")]
+[node name="Player1" type="Node2D" parent="Players" node_paths=PackedStringArray("grid")]
 position = Vector2(92, 288)
-script = ExtResource("4_p1")
+script = ExtResource("4_player")
 grid = NodePath("../..")
+player_prefix = "p1"
+is_peixoto = false
 current_cell = Vector2i(2, 9)
 hold_repeat = true
-hop_time = 0.12
-hop_height = 8.0
+hop_time = 0.23
+hop_height = 13.0
 sprite_rest_y = -4.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Players/Player1"]
-visible = false
-shape = SubResource("CapsuleShape2D_p1")
 
 [node name="Sprite2D" type="Sprite2D" parent="Players/Player1"]
 texture = ExtResource("5_sq")
 hframes = 14
 
-[node name="Player2" type="CharacterBody2D" parent="Players" node_paths=PackedStringArray("grid")]
+[node name="Player2" type="Node2D" parent="Players" node_paths=PackedStringArray("grid")]
 position = Vector2(92, 314)
-script = ExtResource("6_p2")
+script = ExtResource("4_player")
 grid = NodePath("../..")
+player_prefix = "p2"
+is_peixoto = true
 current_cell = Vector2i(2, 10)
 hold_repeat = true
-hop_time = 0.12
-hop_height = 8.0
+hop_time = 0.23
+hop_height = 13.0
 sprite_rest_y = -4.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Players/Player2"]
-visible = false
-shape = SubResource("CapsuleShape2D_p2")
 
 [node name="Sprite2D" type="Sprite2D" parent="Players/Player2"]
 texture = ExtResource("7_px")
@@ -166,13 +152,4 @@ text = "FIM DA DEMO!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="fade_transition" parent="." instance=ExtResource("9_fade")]
-visible = false
-top_level = true
-
-[node name="fade_timer" type="Timer" parent="fade_transition"]
-wait_time = 0.8
-one_shot = true
-
 [connection signal="pressed" from="HUD/BtnMenu" to="." method="_on_btn_menu_pressed"]
-[connection signal="timeout" from="fade_transition/fade_timer" to="." method="_on_fade_timer_timeout"]

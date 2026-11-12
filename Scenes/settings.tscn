@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" path="res://Scripts/settings.gd" id="1_i44u3"]
 [ext_resource type="Theme" uid="uid://c13tjlsx1f482" path="res://Themes/menu_theme.tres" id="2_aaqfp"]
-[ext_resource type="PackedScene" uid="uid://gacarho346hg" path="res://Scenes/fade_transition.tscn" id="2_lhmql"]
 [ext_resource type="FontFile" uid="uid://dsnfisidee8w7" path="res://Themes/Stacked pixel.ttf" id="3_j2dne"]
 [ext_resource type="Texture2D" path="res://Sprites/Maps/AbyssBackground.png" id="4_bg"]
 
@@ -126,17 +125,8 @@ theme_override_fonts/font = ExtResource("3_j2dne")
 text = "Back"
 flat = true
 
-[node name="fade_transition" parent="." instance=ExtResource("2_lhmql")]
-visible = false
-layout_mode = 0
-
-[node name="fade_timer" type="Timer" parent="fade_transition"]
-wait_time = 0.8
-one_shot = true
-
 [connection signal="value_changed" from="MainBox/VolumeBox/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
 [connection signal="pressed" from="MainBox/ScreenBox/BtnFullscreen" to="." method="_on_btn_fullscreen_pressed"]
 [connection signal="pressed" from="MainBox/ScreenBox/BtnTestSquetch" to="." method="_on_btn_test_squetch_pressed"]
 [connection signal="pressed" from="MainBox/ScreenBox/BtnTestPeixoto" to="." method="_on_btn_test_peixoto_pressed"]
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
-[connection signal="timeout" from="fade_transition/fade_timer" to="." method="_on_fade_timer_timeout"]
