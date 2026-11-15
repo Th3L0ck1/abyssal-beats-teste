@@ -1,0 +1,156 @@
+[gd_scene format=3 uid="uid://cworld25dabys"]
+
+[ext_resource type="Script" path="res://Scripts/world.gd" id="1_world"]
+[ext_resource type="Texture2D" path="res://Sprites/Maps/WorldBackground.png" id="2_bg"]
+[ext_resource type="Script" path="res://Scripts/player_base.gd" id="4_player"]
+[ext_resource type="Texture2D" path="res://Sprites/Players/Squetch_sheet.png" id="5_sq"]
+[ext_resource type="Texture2D" path="res://Sprites/Players/Peixoto_sheet.png" id="7_px"]
+[ext_resource type="FontFile" uid="uid://dsnfisidee8w7" path="res://Themes/Stacked pixel.ttf" id="8_font"]
+[ext_resource type="Texture2D" path="res://Sprites/World/WorldIcons_sheet.png" id="10_icons"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_world")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.25, 0.25)
+motion_mirroring = Vector2(960, 0)
+
+[node name="BgSprite" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+texture = ExtResource("2_bg")
+centered = false
+
+[node name="Scenery" type="Node2D" parent="."]
+
+[node name="Grid" type="Node2D" parent="."]
+
+[node name="Players" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player1" type="Node2D" parent="Players" node_paths=PackedStringArray("grid")]
+position = Vector2(92, 288)
+script = ExtResource("4_player")
+grid = NodePath("../..")
+player_prefix = "p1"
+is_peixoto = false
+current_cell = Vector2i(2, 9)
+hold_repeat = true
+hop_time = 0.23
+hop_height = 13.0
+sprite_rest_y = -4.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Players/Player1"]
+texture = ExtResource("5_sq")
+hframes = 14
+
+[node name="Player2" type="Node2D" parent="Players" node_paths=PackedStringArray("grid")]
+position = Vector2(92, 314)
+script = ExtResource("4_player")
+grid = NodePath("../..")
+player_prefix = "p2"
+is_peixoto = true
+current_cell = Vector2i(2, 10)
+hold_repeat = true
+hop_time = 0.23
+hop_height = 13.0
+sprite_rest_y = -4.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Players/Player2"]
+texture = ExtResource("7_px")
+hframes = 14
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(92, 300)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="TopBar" type="ColorRect" parent="HUD"]
+offset_right = 480.0
+offset_bottom = 24.0
+color = Color(0.04, 0.07, 0.14, 0.85)
+
+[node name="ZoneLabel" type="Label" parent="HUD"]
+offset_left = 8.0
+offset_top = 5.0
+offset_right = 170.0
+offset_bottom = 21.0
+theme_override_colors/font_color = Color(0.305882, 0.894118, 0.890196, 1)
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 11
+text = "RECIFE INICIAL"
+
+[node name="KeyIcon" type="Sprite2D" parent="HUD"]
+position = Vector2(188, 12)
+texture = ExtResource("10_icons")
+hframes = 10
+frame = 6
+
+[node name="KeysLabel" type="Label" parent="HUD"]
+offset_left = 198.0
+offset_top = 5.0
+offset_right = 238.0
+offset_bottom = 21.0
+theme_override_colors/font_color = Color(0.984314, 0.94902, 0.211765, 1)
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 11
+text = "x0"
+
+[node name="StatusLabel" type="Label" parent="HUD"]
+offset_left = 244.0
+offset_top = 5.0
+offset_right = 420.0
+offset_bottom = 21.0
+theme_override_colors/font_color = Color(0.85, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 10
+text = "Inimigos: 0/14"
+horizontal_alignment = 1
+
+[node name="BtnMenu" type="Button" parent="HUD"]
+offset_left = 430.0
+offset_top = 2.0
+offset_right = 476.0
+offset_bottom = 22.0
+theme_override_colors/font_color = Color(0.85098, 0.341176, 0.388235, 1)
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 10
+text = "Menu"
+flat = true
+focus_mode = 0
+
+[node name="BottomBar" type="ColorRect" parent="HUD"]
+offset_top = 248.0
+offset_right = 480.0
+offset_bottom = 270.0
+color = Color(0.04, 0.07, 0.14, 0.78)
+
+[node name="HintLabel" type="Label" parent="HUD"]
+offset_left = 8.0
+offset_top = 252.0
+offset_right = 472.0
+offset_bottom = 268.0
+theme_override_colors/font_color = Color(0.796078, 0.858824, 0.988235, 0.95)
+theme_override_colors/font_outline_color = Color(0.05, 0.07, 0.13, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 10
+text = "P1: WASD / Joy 1  |  P2: Analogico / Joy 2  --  pule nos icones vermelhos para lutar!"
+horizontal_alignment = 1
+
+[node name="Banner" type="Label" parent="HUD"]
+visible = false
+offset_left = 40.0
+offset_top = 96.0
+offset_right = 440.0
+offset_bottom = 166.0
+theme_override_colors/font_color = Color(0.984314, 0.94902, 0.211765, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.06, 0.12, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 16
+text = "FIM DA DEMO!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="HUD/BtnMenu" to="." method="_on_btn_menu_pressed"]

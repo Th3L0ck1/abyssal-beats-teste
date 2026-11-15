@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cilgtidqlfwwd"]
+
+[ext_resource type="Texture2D" path="res://Sprites/Maps/Plataforma_sheet.png" id="1_vmtdo"]
+[ext_resource type="Script" path="res://Scripts/plataforma.gd" id="2_plat"]
+
+[node name="Plataforma" type="Node2D"]
+script = ExtResource("2_plat")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_vmtdo")
+hframes = 20

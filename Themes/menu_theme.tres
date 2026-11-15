@@ -1,0 +1,15 @@
+[gd_resource type="Theme" format=3 uid="uid://c13tjlsx1f482"]
+
+[ext_resource type="StyleBox" uid="uid://2kg1hhq32gyv" path="res://Themes/new_style_box_flat.tres" id="1_sb3rf"]
+[ext_resource type="FontFile" uid="uid://dsnfisidee8w7" path="res://Themes/Stacked pixel.ttf" id="2_p7blt"]
+
+[resource]
+default_font = ExtResource("2_p7blt")
+Button/colors/font_outline_color = Color(0.09473937, 0.08377575, 0.22812119, 1)
+Button/constants/outline_size = 8
+Button/fonts/font = ExtResource("2_p7blt")
+PanelContainer/styles/panel = ExtResource("1_sb3rf")
+RichTextLabel/colors/default_color = Color(0, 0, 0.5568628, 0.90588236)
+RichTextLabelTitle/base_type = &"RichTextLabel"
+RichTextLabelTitle/font_sizes/normal_font_size = 32
+VBoxContainer/constants/separation = 16
