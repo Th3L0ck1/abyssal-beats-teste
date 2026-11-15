@@ -147,7 +147,7 @@ func _animar_entrada_arena() -> void:
 	gtw.tween_property(guardian_sprite, "modulate", Color.WHITE, 0.55).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	get_tree().create_timer(0.22).timeout.connect(func():
 		if is_inside_tree():
-			VFX.play(effects_node, FX_RING, 6, 14.0, pos_final, Vector2(2.1, 2.1), false, 1)
+			VFX.play(effects_node, FX_RING, 6, 14.0, pos_final, Vector2.ONE, false, 1)
 			if arena_atmosphere:
 				arena_atmosphere.pulse_beat(1.35)
 	)
@@ -485,7 +485,7 @@ func _impactar_celda(c: Vector2i, s: Dictionary, idx: int) -> void:
 				GameState.play_tone(90.0, 0.22, "boom")
 				_shake(3.5, 0.28)
 		"ring":
-			VFX.play(effects_node, FX_RING, 6, 14.0, pos, Vector2(1.5, 1.5), false, 2)
+			VFX.play(effects_node, FX_RING, 6, 14.0, pos, Vector2.ONE, false, 2)
 			if idx == 0:
 				GameState.play_tone(380.0, 0.2, "bell")
 				_shake(1.5, 0.15)
@@ -504,7 +504,7 @@ func _herir_jogador(p: Node) -> void:
 	p.play_hurt_anim()
 	GameState.record_hit_taken(bool(p.get("is_peixoto")), p.get("current_cell"))
 	vida_players = maxi(0, vida_players - 1)
-	VFX.play(effects_node, FX_HIT, 5, 18.0, p.global_position + Vector2(0, -4), Vector2(1.5, 1.5), false, 5)
+	VFX.play(effects_node, FX_HIT, 5, 18.0, p.global_position + Vector2(0, -4), Vector2.ONE, false, 5)
 	_mostrar_popup_dano(p.global_position + Vector2(0, -18), "-1 HP", Color(1.0, 0.32, 0.38, 1.0))
 	_shake(3.0, 0.2)
 	_atualizar_hud_combate()
@@ -720,7 +720,7 @@ func song_atack(autor: Node = null) -> void:
 		autor.play_symphony_anim()
 
 	var origem: Vector2 = autor.global_position if autor else Vector2(240, 200)
-	VFX.play(effects_node, FX_RING, 6, 14.0, _cell_pos(celula_usada), Vector2(1.4, 1.4), false, 2)
+	VFX.play(effects_node, FX_RING, 6, 14.0, _cell_pos(celula_usada), Vector2.ONE, false, 2)
 	GameState.play_tone(880.0, 0.18, "bell")
 
 	var alvo: Vector2 = guardian.global_position
@@ -731,7 +731,7 @@ func song_atack(autor: Node = null) -> void:
 		n.frame = i % 6
 		n.position = origem
 		n.z_index = 6
-		n.scale = Vector2(1.5, 1.5)
+		n.scale = Vector2.ONE
 		effects_node.add_child(n)
 		var tw := n.create_tween()
 		tw.tween_interval(i * 0.05)
@@ -749,7 +749,7 @@ func _golpear_inimigo(alvo: Vector2) -> void:
 	guardian_sprite.self_modulate = Color(2.8, 2.8, 2.8, 1.0)
 	var flash_tw := create_tween()
 	flash_tw.tween_property(guardian_sprite, "self_modulate", Color.WHITE, 0.16)
-	VFX.play(effects_node, FX_HIT, 5, 16.0, alvo, Vector2(3, 3), false, 5)
+	VFX.play(effects_node, FX_HIT, 5, 16.0, alvo, Vector2.ONE, false, 5)
 	_mostrar_popup_dano(alvo + Vector2(randf_range(-8.0, 8.0), -18.0), "-1 HP", Color(1.0, 0.92, 0.26, 1.0))
 	GameState.play_tone(200.0, 0.2, "boom")
 	_shake(3.0, 0.25)
@@ -825,7 +825,7 @@ func _vencer_combate() -> void:
 		get_tree().create_timer(i * 0.17).timeout.connect(func():
 			if not is_inside_tree():
 				return
-			VFX.play(effects_node, FX_BLAST, 7, 16.0, alvo + Vector2(randf_range(-26, 26), randf_range(-22, 22)), Vector2(1.4, 1.4), false, 6)
+			VFX.play(effects_node, FX_BLAST, 7, 16.0, alvo + Vector2(randf_range(-26, 26), randf_range(-22, 22)), Vector2.ONE, false, 6)
 			GameState.play_tone(80.0 + randf() * 40.0, 0.16, "boom")
 			_shake(3.0, 0.2)
 		)
@@ -836,12 +836,7 @@ func _vencer_combate() -> void:
 	await get_tree().create_timer(1.8).timeout
 	if not is_inside_tree():
 		return
-	var resumo := VictorySummary.new()
-	add_child(resumo)
-	resumo.show_summary("VITORIA!", func():
-		if is_inside_tree():
-			GameState.fade_to_scene("res://Scenes/world.tscn")
-	)
+	GameState.fade_to_scene("res://Scenes/world.tscn")
 
 func _derrota_combate() -> void:
 	if combate_encerrado:

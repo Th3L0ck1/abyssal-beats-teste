@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://oyg3cm7px0hg" path="res://Scripts/menu.gd" id="1_xhh6f"]
 [ext_resource type="Theme" uid="uid://c13tjlsx1f482" path="res://Themes/menu_theme.tres" id="2_158mb"]
 [ext_resource type="Texture2D" uid="uid://buvq3sf36xce3" path="res://Sprites/Maps/AbyssBackground.png" id="4_bg"]
-[ext_resource type="Texture2D" path="res://Sprites/Maps/Plataforma_sheet.png" id="5_plat"]
+[ext_resource type="Texture2D" uid="uid://yoi2wulgm01o" path="res://Sprites/Maps/Plataforma_sheet.png" id="5_plat"]
 [ext_resource type="Texture2D" uid="uid://rr2p7yvnv58g" path="res://Sprites/Players/Squetch_sheet.png" id="6_sq"]
 [ext_resource type="Texture2D" uid="uid://d32c2uxe46pky" path="res://Sprites/Players/Peixoto_sheet.png" id="7_px"]
 
@@ -30,26 +30,22 @@ texture = ExtResource("4_bg")
 
 [node name="PlatLeft" type="Sprite2D" parent="Decor" unique_id=725366005]
 position = Vector2(96, 198)
-scale = Vector2(1.5, 1.5)
 texture = ExtResource("5_plat")
 hframes = 20
 
 [node name="SquetchPreview" type="Sprite2D" parent="Decor" unique_id=274062523]
-position = Vector2(96, 178)
-scale = Vector2(2, 2)
+position = Vector2(96, 189)
 texture = ExtResource("6_sq")
 hframes = 14
 frame = 8
 
 [node name="PlatRight" type="Sprite2D" parent="Decor" unique_id=1986940362]
 position = Vector2(384, 198)
-scale = Vector2(1.5, 1.5)
 texture = ExtResource("5_plat")
 hframes = 20
 
 [node name="PeixotoPreview" type="Sprite2D" parent="Decor" unique_id=1024760919]
-position = Vector2(384, 178)
-scale = Vector2(2, 2)
+position = Vector2(384, 187)
 texture = ExtResource("7_px")
 flip_h = true
 hframes = 14
@@ -71,31 +67,32 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 12
 
-[node name="Title" type="RichTextLabel" parent="PanelContainer/VBoxContainer" unique_id=976883918]
-layout_mode = 2
+[node name="Title" type="RichTextLabel" parent="." unique_id=976883918]
+layout_mode = 0
+offset_left = 139.0
+offset_top = 59.0
+offset_right = 341.0
+offset_bottom = 98.0
 theme_type_variation = &"RichTextLabelTitle"
 theme_override_colors/default_color = Color(0.305882, 0.894118, 0.890196, 1)
 theme_override_colors/font_outline_color = Color(0.0588235, 0.0784314, 0.137255, 1)
 theme_override_constants/outline_size = 8
+theme_override_fonts/normal_font = ExtResource("1_1rerr")
+theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
-text = "[wave amp=35 freq=4]Abyssal Beats[/wave]"
+text = "[wave]Abyssal Beats[/wave]"
 fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
+vertical_alignment = 1
 text_direction = 1
 
-[node name="Subtitle" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1941386492]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.984314, 0.94902, 0.211765, 1)
-theme_override_colors/font_outline_color = Color(0.0588235, 0.0784314, 0.137255, 1)
-theme_override_constants/outline_size = 6
-theme_override_fonts/font = ExtResource("1_1rerr")
-theme_override_font_sizes/font_size = 12
-text = "Squetch & Peixoto - Subaquatic Co-op"
-horizontal_alignment = 1
-
-[node name="Play" type="Button" parent="PanelContainer/VBoxContainer" unique_id=520568020]
-layout_mode = 2
+[node name="Play" type="Button" parent="." unique_id=520568020]
+layout_mode = 0
+offset_left = 220.0
+offset_top = 110.0
+offset_right = 260.0
+offset_bottom = 131.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.796078, 0.858824, 0.988235, 1)
@@ -104,8 +101,12 @@ theme_override_fonts/font = ExtResource("1_1rerr")
 text = "Play"
 flat = true
 
-[node name="Settings" type="Button" parent="PanelContainer/VBoxContainer" unique_id=1686335048]
-layout_mode = 2
+[node name="Settings" type="Button" parent="." unique_id=1686335048]
+layout_mode = 0
+offset_left = 206.0
+offset_top = 143.0
+offset_right = 274.0
+offset_bottom = 164.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.796078, 0.858824, 0.988235, 1)
@@ -114,8 +115,12 @@ theme_override_fonts/font = ExtResource("1_1rerr")
 text = "Settings"
 flat = true
 
-[node name="Quit" type="Button" parent="PanelContainer/VBoxContainer" unique_id=48483289]
-layout_mode = 2
+[node name="Quit" type="Button" parent="." unique_id=48483289]
+layout_mode = 0
+offset_left = 221.0
+offset_top = 176.0
+offset_right = 258.0
+offset_bottom = 197.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.85098, 0.341176, 0.388235, 1)
@@ -124,6 +129,6 @@ theme_override_fonts/font = ExtResource("1_1rerr")
 text = "Quit"
 flat = true
 
-[connection signal="pressed" from="PanelContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]

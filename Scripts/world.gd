@@ -12,7 +12,7 @@ const ENEMY_IDS: Dictionary = {"j": "jellyfish", "c": "crab", "b": "puffer", "p"
 const PLATE_GATE: Dictionary = {"u": "V", "v": "V"}
 const ZONAS: Array = [[0, "RECIFE INICIAL"], [14, "RUINAS SONORAS"], [30, "FOSSA DOS SINOS"], [43, "COVIL DO GUARDIAO"]]
 const DEFAULT_HINT: String = "P1: WASD  |  P2: IJKL / Controle  |  [M] Mapa  |  [ESC] Pausa"
-const DECOR_TEX: Texture2D = preload("res://Sprites/Maps/UnderwaterDecor_sheet.png")
+const FISH_TEX: Texture2D = preload("res://Sprites/Maps/WorldFish_sheet.png")
 
 var kinds: Dictionary = {}         # Vector2i -> caractere do mapa
 var plates_by_gate: Dictionary = {}
@@ -187,25 +187,51 @@ func _celula_livre_perto(cell: Vector2i) -> Vector2i:
 
 func _espalhar_decoracao() -> void:
 	var rnd := RandomNumberGenerator.new()
-	rnd.seed = 11
-	for y in range(-3, map_size.y + 3):
-		for x in range(-3, map_size.x + 3):
-			var perto := false
-			for dy in range(-1, 2):
-				for dx in range(-1, 2):
-					if plataformas.has(Vector2i(x + dx, y + dy)):
-						perto = true
-			if perto or rnd.randf() > 0.075:
-				continue
-			var spr := Sprite2D.new()
-			spr.texture = DECOR_TEX
-			spr.hframes = 8
-			var base: int = [0, 2, 4, 6][rnd.randi() % 4]
-			spr.frame = base
-			spr.position = get_cell_world_pos(Vector2i(x, y)) + Vector2(rnd.randi_range(-6, 6), rnd.randi_range(-6, 6))
-			spr.modulate = Color(0.75, 0.85, 0.95, 1.0)
-			$Scenery.add_child(spr)
-			decor_nodes.append([spr, base])
+	rnd.randomize()
+	var world_w: float = MAP_ORIGIN.x + map_size.x * TILE_STEP + 30.0
+	var world_h: float = MAP_ORIGIN.y + map_size.y * TILE_STEP - 10.0
+	var pontos: Array[Vector2] = []
+	var tentativas: int = 0
+
+	while pontos.size() < 30 and tentativas < 500:
+		tentativas += 1
+		var p := Vector2(rnd.randf_range(24.0, world_w), rnd.randf_range(34.0, world_h))
+		var gx := int(round((p.x - MAP_ORIGIN.x) / TILE_STEP))
+		var gy := int(round((p.y - MAP_ORIGIN.y) / TILE_STEP))
+		# Nas primeiras tentativas evita nascer bem atras de blocos, priorizando areas abertas
+		if tentativas < 320 and plataformas.has(Vector2i(gx, gy)):
+			continue
+		var perto := false
+		for outro in pontos:
+			if p.distance_to(outro) < 62.0:
+				perto = true
+				break
+		if perto:
+			continue
+		pontos.append(p)
+
+		var spr := Sprite2D.new()
+		spr.texture = FISH_TEX
+		spr.hframes = 12
+		var base: int = [0, 2, 4, 6, 8, 10][rnd.randi() % 6]
+		var step_offset: int = rnd.randi() % 2
+		var facing_left: bool = rnd.randf() < 0.5
+		spr.frame = base + step_offset
+		spr.flip_h = facing_left
+		spr.position = p
+		spr.modulate = Color(
+			rnd.randf_range(0.62, 0.90),
+			rnd.randf_range(0.74, 0.95),
+			rnd.randf_range(0.86, 1.0),
+			rnd.randf_range(0.58, 0.88)
+		)
+		spr.z_index = -2
+		$Scenery.add_child(spr)
+
+		var vx: float = (-1.0 if facing_left else 1.0) * rnd.randf_range(4.5, 11.0)
+		var phase: float = rnd.randf_range(0.0, TAU)
+		var amp: float = rnd.randf_range(1.2, 3.0)
+		decor_nodes.append([spr, base, p.y, vx, phase, amp, step_offset])
 
 func _configurar_camera() -> void:
 	camera.limit_left = 0
@@ -228,12 +254,24 @@ func _process(delta: float) -> void:
 
 	_atualizar_placas()
 
+	var limit_x: float = MAP_ORIGIN.x + map_size.x * TILE_STEP + 60.0
+	var t_now: float = Time.get_ticks_msec() * 0.001
 	decor_timer += delta
-	if decor_timer >= 0.5:
+	var anim_tick := false
+	if decor_timer >= 0.42:
 		decor_timer = 0.0
 		decor_step = (decor_step + 1) % 2
-		for d in decor_nodes:
-			d[0].frame = d[1] + decor_step
+		anim_tick = true
+	for d in decor_nodes:
+		var spr: Sprite2D = d[0]
+		spr.position.x += float(d[3]) * delta
+		if spr.position.x < -32.0:
+			spr.position.x = limit_x
+		elif spr.position.x > limit_x:
+			spr.position.x = -32.0
+		spr.position.y = float(d[2]) + sin(t_now * 1.4 + float(d[4])) * float(d[5])
+		if anim_tick:
+			spr.frame = int(d[1]) + ((decor_step + int(d[6])) % 2)
 
 	if hint_timer > 0.0:
 		hint_timer -= delta
@@ -370,7 +408,7 @@ func _fim_da_demo() -> void:
 	banner_label.hide()
 	var resumo := VictorySummary.new()
 	add_child(resumo)
-	resumo.show_summary("FIM DA DEMO!", func():
+	resumo.show_summary("ESTATISTICAS FINAIS", func():
 		if is_inside_tree():
 			_ir_para_menu()
 	)

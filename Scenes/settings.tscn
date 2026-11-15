@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://bpj6cl17qig7s"]
 
-[ext_resource type="Script" path="res://Scripts/settings.gd" id="1_i44u3"]
+[ext_resource type="Script" uid="uid://cpvgx7h4yco2d" path="res://Scripts/settings.gd" id="1_i44u3"]
 [ext_resource type="Theme" uid="uid://c13tjlsx1f482" path="res://Themes/menu_theme.tres" id="2_aaqfp"]
 [ext_resource type="FontFile" uid="uid://dsnfisidee8w7" path="res://Themes/Stacked pixel.ttf" id="3_j2dne"]
-[ext_resource type="Texture2D" path="res://Sprites/Maps/AbyssBackground.png" id="4_bg"]
+[ext_resource type="Texture2D" uid="uid://buvq3sf36xce3" path="res://Sprites/Maps/AbyssBackground.png" id="4_bg"]
 
-[node name="settings" type="Control"]
+[node name="settings" type="Control" unique_id=1158395900]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,7 +15,7 @@ grow_vertical = 2
 theme = ExtResource("2_aaqfp")
 script = ExtResource("1_i44u3")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=847253029]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,7 +24,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_bg")
 
-[node name="MainBox" type="VBoxContainer" parent="."]
+[node name="MainBox" type="VBoxContainer" parent="." unique_id=488383882]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -39,21 +39,21 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 8
 
-[node name="Header" type="Label" parent="MainBox"]
+[node name="Header" type="Label" parent="MainBox" unique_id=1856033344]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.305882, 0.894118, 0.890196, 1)
 theme_override_colors/font_outline_color = Color(0.0588235, 0.0784314, 0.137255, 1)
 theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("3_j2dne")
 theme_override_font_sizes/font_size = 20
-text = "OPCOES & CONTROLES"
+text = "OPCOES e CONTROLES"
 horizontal_alignment = 1
 
-[node name="VolumeBox" type="HBoxContainer" parent="MainBox"]
+[node name="VolumeBox" type="HBoxContainer" parent="MainBox" unique_id=213208788]
 layout_mode = 2
 alignment = 1
 
-[node name="VolumeLabel" type="Label" parent="MainBox/VolumeBox"]
+[node name="VolumeLabel" type="Label" parent="MainBox/VolumeBox" unique_id=187260630]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.984314, 0.94902, 0.211765, 1)
@@ -63,18 +63,17 @@ theme_override_fonts/font = ExtResource("3_j2dne")
 theme_override_font_sizes/font_size = 12
 text = "Volume Geral: 85%"
 
-[node name="VolumeSlider" type="HSlider" parent="MainBox/VolumeBox"]
+[node name="VolumeSlider" type="HSlider" parent="MainBox/VolumeBox" unique_id=217446729]
 custom_minimum_size = Vector2(180, 16)
 layout_mode = 2
-max_value = 100.0
 step = 5.0
 value = 85.0
 
-[node name="ScreenBox" type="HBoxContainer" parent="MainBox"]
+[node name="ScreenBox" type="HBoxContainer" parent="MainBox" unique_id=133698185]
 layout_mode = 2
 alignment = 1
 
-[node name="BtnFullscreen" type="Button" parent="MainBox/ScreenBox"]
+[node name="BtnFullscreen" type="Button" parent="MainBox/ScreenBox" unique_id=1935145669]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.796078, 0.858824, 0.988235, 1)
 theme_override_fonts/font = ExtResource("3_j2dne")
@@ -82,7 +81,7 @@ theme_override_font_sizes/font_size = 12
 text = "Tela: Janela Maximizada"
 flat = true
 
-[node name="BtnTestSquetch" type="Button" parent="MainBox/ScreenBox"]
+[node name="BtnTestSquetch" type="Button" parent="MainBox/ScreenBox" unique_id=1232136887]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.305882, 0.894118, 0.890196, 1)
 theme_override_fonts/font = ExtResource("3_j2dne")
@@ -90,7 +89,7 @@ theme_override_font_sizes/font_size = 12
 text = "Som Squetch"
 flat = true
 
-[node name="BtnTestPeixoto" type="Button" parent="MainBox/ScreenBox"]
+[node name="BtnTestPeixoto" type="Button" parent="MainBox/ScreenBox" unique_id=2071494813]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.85098, 0.341176, 0.388235, 1)
 theme_override_fonts/font = ExtResource("3_j2dne")
@@ -98,7 +97,7 @@ theme_override_font_sizes/font_size = 12
 text = "Som Peixoto"
 flat = true
 
-[node name="ControlsInfo" type="Label" parent="MainBox"]
+[node name="ControlsInfo" type="Label" parent="MainBox" unique_id=725310494]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.796078, 0.858824, 0.988235, 1)
 theme_override_colors/font_outline_color = Color(0.0588235, 0.0784314, 0.137255, 1)
@@ -113,7 +112,7 @@ P2 (Peixoto - Violao de Coral):
   Sinfonia: Y-Cima, A-Baixo, X-Esq, B-Dir (ou Numpad 8,5,4,6)"
 horizontal_alignment = 1
 
-[node name="Back" type="Button" parent="."]
+[node name="Back" type="Button" parent="." unique_id=651311783]
 layout_mode = 0
 offset_top = 240.0
 offset_right = 480.0

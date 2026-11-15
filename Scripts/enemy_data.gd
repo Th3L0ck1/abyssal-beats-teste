@@ -6,19 +6,19 @@ class_name EnemyData
 ## Inclui tambem a paleta visual da arena e a assinatura ritmica exclusiva de cada criatura.
 const ENEMIES: Dictionary = {
 	"jellyfish": {
-		"name": "Agua-viva Eletrica",
+		"name": "Moreia Eletrica",
 		"sheet": preload("res://Sprites/Enemies/Jellyfish_sheet.png"),
-		"scale": 2.0,
+		"scale": 1.0,
 		"hp": 2,
 		"interval": 2.9,
 		"patterns": ["coluna", "coluna", "celula", "coluna_dupla"],
 		"icon": 0,
-		"bg_modulate": Color(0.72, 0.96, 1.18, 1.0),
-		"coral_modulate": Color(0.50, 1.22, 1.30, 1.0),
-		"pillar_modulate": Color(0.76, 0.92, 1.16, 1.0),
-		"aura_color": Color(0.22, 0.92, 1.0, 1.0),
-		"accent_color": Color(0.68, 0.48, 1.0, 1.0),
-		"bar_color": Color(0.26, 0.88, 0.98, 1.0),
+		"bg_modulate": Color(0.76, 1.06, 0.88, 1.0),
+		"coral_modulate": Color(0.62, 1.26, 0.72, 1.0),
+		"pillar_modulate": Color(0.80, 1.04, 0.88, 1.0),
+		"aura_color": Color(0.38, 0.96, 0.44, 1.0),
+		"accent_color": Color(1.0, 0.90, 0.28, 1.0),
+		"bar_color": Color(0.42, 0.92, 0.46, 1.0),
 		"beat_notes": [73.42, 55.0],
 		"beat_harmonic": 293.66,
 		"beat_wave": "synth",
@@ -26,7 +26,7 @@ const ENEMIES: Dictionary = {
 	"crab": {
 		"name": "Caranguejo-Robo",
 		"sheet": preload("res://Sprites/Enemies/Crab_sheet.png"),
-		"scale": 1.7,
+		"scale": 1.0,
 		"hp": 3,
 		"interval": 3.0,
 		"patterns": ["linha", "linha", "celula", "linha_dupla"],
@@ -44,7 +44,7 @@ const ENEMIES: Dictionary = {
 	"puffer": {
 		"name": "Baiacu-Mina",
 		"sheet": preload("res://Sprites/Enemies/Puffer_sheet.png"),
-		"scale": 1.7,
+		"scale": 1.0,
 		"hp": 3,
 		"interval": 2.9,
 		"patterns": ["celula", "cruz", "cruz", "celula"],
@@ -62,7 +62,7 @@ const ENEMIES: Dictionary = {
 	"bell": {
 		"name": "Polvo-Sino",
 		"sheet": preload("res://Sprites/Enemies/Bell_sheet.png"),
-		"scale": 1.7,
+		"scale": 1.0,
 		"hp": 3,
 		"interval": 3.2,
 		"patterns": ["ondas", "ondas", "celula", "xadrez"],
@@ -80,7 +80,7 @@ const ENEMIES: Dictionary = {
 	"boss": {
 		"name": "Guardiao Abissal",
 		"sheet": preload("res://Sprites/Enemies/Boss_sheet.png"),
-		"scale": 1.3,
+		"scale": 1.0,
 		"hp": 6,
 		"interval": 3.0,
 		"patterns": ["celula", "coluna", "linha", "cruz"],

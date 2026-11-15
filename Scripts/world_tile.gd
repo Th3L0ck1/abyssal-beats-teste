@@ -132,7 +132,7 @@ func open_gate() -> void:
 	base_frame = FR_OPEN
 	anim_count = 1
 	_atualizar_frame()
-	VFX.play(self, BUBBLES_TEX, 5, 11.0, Vector2(0, -4), Vector2(1.8, 1.8), false, 3)
+	VFX.play(self, BUBBLES_TEX, 5, 11.0, Vector2(0, -4), Vector2.ONE, false, 3)
 	var tw := create_tween()
 	tw.tween_property(sprite, "scale", Vector2(1.25, 1.25), 0.07)
 	tw.tween_property(sprite, "scale", Vector2.ONE, 0.12)
@@ -144,7 +144,7 @@ func take_chest() -> void:
 	chest_taken = true
 	icon.frame = 8
 	icon.position.y = -4
-	VFX.play(self, BUBBLES_TEX, 5, 11.0, Vector2(0, -8), Vector2(1.5, 1.5), false, 3)
+	VFX.play(self, BUBBLES_TEX, 5, 11.0, Vector2(0, -8), Vector2.ONE, false, 3)
 	GameState.play_tone(784.0, 0.12, "bell")
 
 func on_stepped() -> void:
