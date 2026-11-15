@@ -647,10 +647,10 @@ func _atualizar_status_symphony() -> void:
 	var p2_na_casa := (p2.current_cell == celula_symphony and not p2.is_jumping)
 
 	if p1_na_casa:
-		symphony_prompt.text = "%s - SQUETCH tocando! [Setas] (%d/%d)" % [nome_ritmo_atual, progresso_ritmo, sequencia_atual.size()]
+		symphony_prompt.text = "%s - SQUETCH tocando! [Setas ou Y/A/X/B] (%d/%d)" % [nome_ritmo_atual, progresso_ritmo, sequencia_atual.size()]
 		rhythm_display.modulate = Color(1, 1, 1, 1)
 	elif p2_na_casa:
-		symphony_prompt.text = "%s - PEIXOTO tocando! [Num 8/5/4/6 ou Controle] (%d/%d)" % [nome_ritmo_atual, progresso_ritmo, sequencia_atual.size()]
+		symphony_prompt.text = "%s - PEIXOTO tocando! [Controle Y/A/X/B ou Numpad] (%d/%d)" % [nome_ritmo_atual, progresso_ritmo, sequencia_atual.size()]
 		rhythm_display.modulate = Color(1, 1, 1, 1)
 	else:
 		symphony_prompt.text = "%s - Pise na plataforma da SINFONIA (notas saindo do chao)!" % nome_ritmo_atual

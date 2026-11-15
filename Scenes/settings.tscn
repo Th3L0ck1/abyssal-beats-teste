@@ -97,19 +97,36 @@ theme_override_font_sizes/font_size = 12
 text = "Som Peixoto"
 flat = true
 
+[node name="ControlBox" type="HBoxContainer" parent="MainBox" unique_id=987123456]
+layout_mode = 2
+alignment = 1
+
+[node name="BtnControlMode" type="Button" parent="MainBox/ControlBox" unique_id=987123457]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.984314, 0.94902, 0.211765, 1)
+theme_override_fonts/font = ExtResource("3_j2dne")
+theme_override_font_sizes/font_size = 12
+text = "Modo: P2 no Joystick [Padrao]"
+flat = true
+
 [node name="ControlsInfo" type="Label" parent="MainBox" unique_id=725310494]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.796078, 0.858824, 0.988235, 1)
 theme_override_colors/font_outline_color = Color(0.0588235, 0.0784314, 0.137255, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("3_j2dne")
-theme_override_font_sizes/font_size = 11
-text = "P1 (Squetch - Lula Teclado):
-  Mover: W, A, S, D  |  Sinfonia: Setas (Cima, Baixo, Esq, Dir)
+theme_override_font_sizes/font_size = 10
+text = "P1 (Squetch - Teclado / Joystick 1):
+  Mover: W, A, S, D  ou  Analogico Esq / D-Pad
+  Sinfonia: Setas (Cima, Baixo, Esq, Dir)  ou  Botoes (Y, A, X, B)
 
-P2 (Peixoto - Violao de Coral):
-  Mover: Analogico Esq (ou IJKL)
-  Sinfonia: Y-Cima, A-Baixo, X-Esq, B-Dir (ou Numpad 8,5,4,6)"
+P2 (Peixoto - Joystick 2 / Teclado):
+  Mover: Analogico Esq / D-Pad  ou  I, J, K, L
+  Sinfonia: Botoes (Y, A, X, B)  ou  Numpad (8, 5, 4, 6)
+
+Geral (Joystick / Teclado):
+  Menus: D-Pad / Analogico  |  [A / Start] Confirmar  |  [B] Voltar
+  Mundo: [Select / M / Tab] Abrir Minimapa  |  [Start / ESC] Pausa"
 horizontal_alignment = 1
 
 [node name="Back" type="Button" parent="." unique_id=651311783]
@@ -128,4 +145,5 @@ flat = true
 [connection signal="pressed" from="MainBox/ScreenBox/BtnFullscreen" to="." method="_on_btn_fullscreen_pressed"]
 [connection signal="pressed" from="MainBox/ScreenBox/BtnTestSquetch" to="." method="_on_btn_test_squetch_pressed"]
 [connection signal="pressed" from="MainBox/ScreenBox/BtnTestPeixoto" to="." method="_on_btn_test_peixoto_pressed"]
+[connection signal="pressed" from="MainBox/ControlBox/BtnControlMode" to="." method="_on_btn_control_mode_pressed"]
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

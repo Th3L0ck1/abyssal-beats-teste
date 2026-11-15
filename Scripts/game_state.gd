@@ -3,6 +3,17 @@ extends Node
 var master_volume: float = 0.85
 var is_fullscreen: bool = false
 
+# --- Modos de Controle para Joystick / Gamepad ---
+enum ControllerMode {
+	P2_JOYPAD = 0,    # 1 Joystick: P2 no Joystick (conforme orientacao original), P1 no Teclado
+	P1_JOYPAD = 1,    # 1 Joystick: P1 no Joystick, P2 no Teclado
+	DUAL_JOYPAD = 2,  # 2 Joysticks: P1 no Joy 0, P2 no Joy 1
+	MIRROR_TEST = 3,  # 1 Joystick move ambos (modo teste)
+}
+
+var controller_mode: int = ControllerMode.P2_JOYPAD
+signal controller_mode_changed(new_mode: int)
+
 # --- Progresso do mundo (persiste entre world.tscn <-> defense.tscn) ---
 var world_initialized: bool = false
 var world_p1_cell: Vector2i = Vector2i(2, 9)
@@ -46,6 +57,8 @@ func _ready() -> void:
 	_setup_fade_layer()
 	_setup_synth()
 	load_settings()
+	_garantir_botoes_de_confirmacao()
+	_setup_controllers()
 	# Atalho de depuracao: godot --path . res://Scenes/defense.tscn -- --enemy=boss
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--enemy="):
@@ -131,15 +144,109 @@ func load_settings() -> void:
 	if cfg.load(SETTINGS_PATH) == OK:
 		master_volume = float(cfg.get_value("audio", "master_volume", 0.85))
 		is_fullscreen = bool(cfg.get_value("video", "is_fullscreen", false))
+		controller_mode = int(cfg.get_value("controls", "controller_mode", ControllerMode.P2_JOYPAD))
 	apply_volume(master_volume, false)
 	if DisplayServer.get_name() != "headless":
 		apply_fullscreen(is_fullscreen, false)
+	apply_controller_input_map()
 
 func save_settings() -> void:
 	var cfg := ConfigFile.new()
 	cfg.set_value("audio", "master_volume", master_volume)
 	cfg.set_value("video", "is_fullscreen", is_fullscreen)
+	cfg.set_value("controls", "controller_mode", controller_mode)
 	cfg.save(SETTINGS_PATH)
+
+## Garante que o botao A confirme (ui_accept) e o B volte (ui_cancel) em qualquer joystick.
+func _garantir_botoes_de_confirmacao() -> void:
+	_garantir_botao_joy("ui_accept", JOY_BUTTON_A)
+	_garantir_botao_joy("ui_cancel", JOY_BUTTON_B)
+
+func _garantir_botao_joy(action: String, button: JoyButton) -> void:
+	if not InputMap.has_action(action):
+		InputMap.add_action(action)
+	for ev in InputMap.action_get_events(action):
+		if ev is InputEventJoypadButton and ev.button_index == button:
+			return
+	var novo := InputEventJoypadButton.new()
+	novo.button_index = button
+	novo.device = -1
+	InputMap.action_add_event(action, novo)
+
+func _setup_controllers() -> void:
+	Input.joy_connection_changed.connect(func(_device: int, _connected: bool):
+		auto_detect_controller_mode(true)
+	)
+	auto_detect_controller_mode(false)
+
+func auto_detect_controller_mode(emit_change: bool = false) -> void:
+	var count := Input.get_connected_joypads().size()
+	if count >= 2:
+		controller_mode = ControllerMode.DUAL_JOYPAD
+	elif count == 1 and controller_mode == ControllerMode.DUAL_JOYPAD:
+		controller_mode = ControllerMode.P2_JOYPAD
+	apply_controller_input_map()
+	if emit_change:
+		controller_mode_changed.emit(controller_mode)
+
+func get_controller_mode_name(mode: int = -1) -> String:
+	if mode == -1:
+		mode = controller_mode
+	match mode:
+		ControllerMode.P2_JOYPAD:
+			return "P2 (Peixoto) no Joystick [Padrao]"
+		ControllerMode.P1_JOYPAD:
+			return "P1 (Squetch) no Joystick"
+		ControllerMode.DUAL_JOYPAD:
+			return "2 Joysticks (P1=Joy 1, P2=Joy 2)"
+		ControllerMode.MIRROR_TEST:
+			return "Espelho (1 Joy move Ambos)"
+		_:
+			return "Padrao"
+
+func cycle_controller_mode() -> int:
+	controller_mode = (controller_mode + 1) % 4
+	apply_controller_input_map()
+	save_settings()
+	controller_mode_changed.emit(controller_mode)
+	return controller_mode
+
+func apply_controller_input_map() -> void:
+	var p1_actions: Array[String] = ["p1_up", "p1_down", "p1_left", "p1_right", "p1_note_up", "p1_note_down", "p1_note_left", "p1_note_right"]
+	var p2_actions: Array[String] = ["p2_up", "p2_down", "p2_left", "p2_right", "p2_note_up", "p2_note_down", "p2_note_left", "p2_note_right"]
+
+	var p1_device: int = 99
+	var p2_device: int = 99
+
+	match controller_mode:
+		ControllerMode.P2_JOYPAD:
+			# P1 no Teclado (joystick desativado para nao conflitar); P2 no Joystick (Joy 0 ou qualquer joystick)
+			p1_device = 99
+			p2_device = -1
+		ControllerMode.P1_JOYPAD:
+			# P1 no Joystick (Joy 0 ou qualquer joystick); P2 no Teclado (joystick desativado)
+			p1_device = -1
+			p2_device = 99
+		ControllerMode.DUAL_JOYPAD:
+			# P1 no Joystick 0; P2 no Joystick 1
+			p1_device = 0
+			p2_device = 1
+		ControllerMode.MIRROR_TEST:
+			# 1 Joystick move ambos simultaneamente
+			p1_device = -1
+			p2_device = -1
+
+	_set_actions_joypad_device(p1_actions, p1_device)
+	_set_actions_joypad_device(p2_actions, p2_device)
+
+func _set_actions_joypad_device(action_names: Array[String], target_device: int) -> void:
+	for act in action_names:
+		if not InputMap.has_action(act):
+			continue
+		var events := InputMap.action_get_events(act)
+		for ev in events:
+			if ev is InputEventJoypadMotion or ev is InputEventJoypadButton:
+				ev.device = target_device
 
 func apply_volume(value: float, persist: bool = true) -> void:
 	master_volume = clampf(value, 0.0, 1.0)

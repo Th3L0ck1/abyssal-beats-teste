@@ -109,7 +109,7 @@ func _atualizar_sprite() -> void:
 # ---------------------------------------------------------------- Movimento em Pulos de Bloco em Bloco
 func _poll_direction() -> Vector2i:
 	var v := Input.get_vector(player_prefix + "_left", player_prefix + "_right", player_prefix + "_up", player_prefix + "_down")
-	if v.length() < 0.5:
+	if v.length() < 0.45:
 		return Vector2i.ZERO
 	if absf(v.x) > absf(v.y):
 		return Vector2i(1 if v.x > 0.0 else -1, 0)

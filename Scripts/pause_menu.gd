@@ -128,7 +128,7 @@ func _build_ui() -> void:
 	hint_footer.add_theme_font_override("font", FONT_PIXEL)
 	hint_footer.add_theme_font_size_override("font_size", 8)
 	hint_footer.add_theme_color_override("font_color", Color(0.58, 0.76, 0.88, 0.9))
-	hint_footer.text = "W/S: Navegar  |  Enter: OK  |  ESC: Fechar"
+	hint_footer.text = "W/S ou D-Pad: Navegar  |  Enter / A: OK  |  ESC / B: Fechar"
 	card_panel.add_child(hint_footer)
 
 	_refresh_visuals()
@@ -234,7 +234,9 @@ func _activate_option(idx: int) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	var pressed_pause := false
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+	if event.is_action_pressed("pause_game", false):
+		pressed_pause = true
+	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
 		pressed_pause = true
 	elif event is InputEventJoypadButton and event.pressed and event.button_index == JOY_BUTTON_START:
 		pressed_pause = true
@@ -245,6 +247,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 
 	if not is_open:
+		return
+
+	if event.is_action_pressed("ui_cancel", false) or (event is InputEventJoypadButton and event.pressed and event.button_index == JOY_BUTTON_B):
+		get_viewport().set_input_as_handled()
+		toggle_pause()
 		return
 
 	if event.is_action_pressed("ui_up", false) or event.is_action_pressed("p1_up", false) or event.is_action_pressed("p2_up", false):
@@ -263,6 +270,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif selected_idx == 1 and (event.is_action_pressed("ui_right", false) or event.is_action_pressed("p1_right", false) or event.is_action_pressed("p2_right", false)):
 		get_viewport().set_input_as_handled()
 		_adjust_volume(10.0)
-	elif event.is_action_pressed("ui_accept", false):
+	elif event.is_action_pressed("ui_accept", false) or (event is InputEventJoypadButton and event.pressed and event.button_index == JOY_BUTTON_A):
 		get_viewport().set_input_as_handled()
 		_activate_option(selected_idx)

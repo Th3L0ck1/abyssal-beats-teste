@@ -117,6 +117,7 @@ theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 10
 text = "Menu"
 flat = true
+focus_mode = 0
 
 [node name="BottomBar" type="ColorRect" parent="HUD"]
 offset_top = 248.0
@@ -134,7 +135,7 @@ theme_override_colors/font_outline_color = Color(0.05, 0.07, 0.13, 1)
 theme_override_constants/outline_size = 3
 theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 10
-text = "P1: WASD  |  P2: Analogico / IJKL  --  pule nos icones vermelhos para lutar!"
+text = "P1: WASD / Joy 1  |  P2: Analogico / Joy 2  --  pule nos icones vermelhos para lutar!"
 horizontal_alignment = 1
 
 [node name="Banner" type="Label" parent="HUD"]

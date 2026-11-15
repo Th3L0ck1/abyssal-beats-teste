@@ -11,7 +11,7 @@ const MAX_DY: int = 6
 const ENEMY_IDS: Dictionary = {"j": "jellyfish", "c": "crab", "b": "puffer", "p": "bell", "G": "boss"}
 const PLATE_GATE: Dictionary = {"u": "V", "v": "V"}
 const ZONAS: Array = [[0, "RECIFE INICIAL"], [14, "RUINAS SONORAS"], [30, "FOSSA DOS SINOS"], [43, "COVIL DO GUARDIAO"]]
-const DEFAULT_HINT: String = "P1: WASD  |  P2: IJKL / Controle  |  [M] Mapa  |  [ESC] Pausa"
+const DEFAULT_HINT: String = "P1: WASD / Joy 1  |  P2: Analogico / Joy 2  |  [Select / Y / M] Mapa  |  [Start / ESC] Pausa"
 const FISH_TEX: Texture2D = preload("res://Sprites/Maps/WorldFish_sheet.png")
 
 var kinds: Dictionary = {}         # Vector2i -> caractere do mapa
@@ -437,8 +437,17 @@ func _on_btn_menu_pressed() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if em_transicao or fim_demo:
 		return
-	if event is InputEventKey and event.pressed and not event.echo:
+	if event.is_action_pressed("toggle_map", false):
+		get_viewport().set_input_as_handled()
+		_alternar_minimapa()
+		GameState.play_ui_sfx("hover")
+	elif event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_M or event.keycode == KEY_TAB:
+			get_viewport().set_input_as_handled()
+			_alternar_minimapa()
+			GameState.play_ui_sfx("hover")
+	elif event is InputEventJoypadButton and event.pressed:
+		if event.button_index == JOY_BUTTON_BACK or event.button_index == JOY_BUTTON_Y or event.button_index == JOY_BUTTON_LEFT_SHOULDER or event.button_index == JOY_BUTTON_RIGHT_SHOULDER:
 			get_viewport().set_input_as_handled()
 			_alternar_minimapa()
 			GameState.play_ui_sfx("hover")
